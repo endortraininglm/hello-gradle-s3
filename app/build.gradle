@@ -11,14 +11,14 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
     maven {
         url "s3://lmoreno-endor-maven-repo/releases"
         authentication {
             awsIm(AwsImAuthentication) // Uses AWS IAM role-based authentication
         }
     }
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
