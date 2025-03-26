@@ -1,10 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
 name: Endor Labs Dependency and Secrets Scan
 
 on:
@@ -27,6 +20,7 @@ jobs:
       TENANT_NAME: "leonardo-learn"
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      ENDOR_JS_ENABLE_TSSERVER: false
 
     steps:
     - name: Checkout Repository
@@ -34,8 +28,9 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '11'
         distribution: 'temurin'
+        cache: gradle 
 
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
@@ -51,9 +46,7 @@ jobs:
       with:
         namespace: ${{ env.TENANT_NAME }} # Replace with actual Endor Labs tenant namespace
         scan_dependencies: true
-        # scan_secrets: true
         pr: true
-        # enable_pr_comments: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Endor Labs Scan (Push & Manual Runs)
@@ -62,10 +55,9 @@ jobs:
       with:
         namespace: ${{ env.TENANT_NAME }} # Replace with actual Endor Labs tenant namespace
         scan_dependencies: true
-        # scan_secrets: true
         pr: false
-        scan_summary_output_type: 'table'
-        sarif_file: 'findings.sarif'
+        log_level: debug
+        additional_args: "--quick-scan --languages=java --bypass-host-check --call-graph-languages=java"
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
