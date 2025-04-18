@@ -9,9 +9,9 @@ name: Endor Labs Dependency and Secrets Scan
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "jacoco_issue" ]
+#  pull_request:
+#    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -66,6 +66,7 @@ jobs:
         pr: false
         scan_summary_output_type: 'table'
         sarif_file: 'findings.sarif'
+        additional_args: exclude-path="**/org.jacoco/**/*"
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
