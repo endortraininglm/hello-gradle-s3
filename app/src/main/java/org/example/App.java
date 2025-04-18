@@ -3,11 +3,12 @@
  */
 package org.example;
 
-import com.example.S3AckTestUtil;
+//import com.example.S3AckTestUtil;
 
 public class App {
     public String getGreeting() {
-        return S3AckTestUtil.getS3Message();
+//        return S3AckTestUtil.getS3Message();
+        return "Hello World!";
     }
 
     public static void main(String[] args) {
